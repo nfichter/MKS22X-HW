@@ -1,10 +1,12 @@
 public class QueenBoard{
     private int[][]board;
     private String[][]bNew;
+    private int[]queens;
     
     public QueenBoard(int size) {
 	board = new int[size][size];
 	bNew = new String[size][size];
+	queens = new int[size];
     }
 
     public boolean solve() {
@@ -16,12 +18,13 @@ public class QueenBoard{
 	    return true;
 	}
 	for (int r = 0; r < board.length; r++) {
-	    if (addQueen(r,c)) {
+	    if (board[r][c] == 0) {
+		addQueen(r,c);
 		if (solveH(c+1)) {
 		    return true;
 		}
 		else {
-		    removeQueen(r,c);
+		    removeQueen(queens[c],c);
 		}
 	    }
 	}
@@ -56,9 +59,9 @@ public class QueenBoard{
 	    if(row + offset < board.length){
 		board[row+offset][col+offset]--;
 	    }
-	    col++;
 	    offset++;
 	}
+	queens[col] = row;
 	return true;
     }
 
@@ -76,13 +79,12 @@ public class QueenBoard{
 	    if(row + offset < board.length){
 		board[row+offset][col+offset]++;
 	    }
-	    col++;
 	    offset++;
 	}
 	return true;
     }
 
-    public String  toString(){
+    public String toString(){
 	String ans = "";
 	for(int r = 0; r < bNew.length; r++){
 	    for(int c = 0; c < bNew[0].length; c++){
@@ -94,7 +96,7 @@ public class QueenBoard{
     }
 
     public static void main(String[]args){
-	QueenBoard b = new QueenBoard(8);
+	QueenBoard b = new QueenBoard(7);
 	b.solve();
         b.printSolution();
     }   
