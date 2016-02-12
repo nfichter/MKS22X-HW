@@ -25,6 +25,13 @@ public class KnightBoard {
 	if (step > (size-4)*(size-4)) {
 	    return true;
 	}
+	for (int r2 = 2; r2 < size-3; r2++) {
+	    for (int c2 = 2; c2 < size-3; c2++) {
+		if ((r2-r == 2 || r2-r == 3 || c2-c == 2 || c2-c == 3) && ((!(r2-r == 2 && c2-c == 2)) || (!(r2-r == 3 && c2-c == 3)))) {
+		    return true; //FIX
+		}
+	    }
+	}
 	if (move(1,2,r,c,step)) {
 	    step++;
 	    if (solveH(r+1,c+2,step) || solveH(r+1,c+2,step) || solveH(r-1,c+2,step) || solveH(r-2,c+1,step) || solveH(r+1,c-2,step) || solveH(r+2,c-1,step) || solveH(r-1,c-2,step) || solveH(r-2,c-1,step)) {
