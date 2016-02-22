@@ -21,27 +21,33 @@ public class KnightBoard {
 	return solveH(2,2,0);
     }
 
-    public boolean solveH(int r, int c, int step) {
-	if (step > (size-4)*(size-4)) {
+    public boolean solveH(int r, int c, int n) {
+	if (move(r+1,c+2,r,c,n) && solveH(r+1,c+2,n+1)) {
 	    return true;
 	}
-	for (int r2 = 2; r2 < size-3; r2++) {
-	    for (int c2 = 2; c2 < size-3; c2++) {
-		if ((r2-r == 2 || r2-r == 3 || c2-c == 2 || c2-c == 3) && ((!(r2-r == 2 && c2-c == 2)) || (!(r2-r == 3 && c2-c == 3)))) {
-		    return true; //FIX
-		}
-	    }
+	if (move(r+1,c-2,r,c,n) && solveH(r+1,c-2,n+1)) {
+	    return true;
 	}
-	if (move(1,2,r,c,step)) {
-	    step++;
-	    if (solveH(r+1,c+2,step) || solveH(r+1,c+2,step) || solveH(r-1,c+2,step) || solveH(r-2,c+1,step) || solveH(r+1,c-2,step) || solveH(r+2,c-1,step) || solveH(r-1,c-2,step) || solveH(r-2,c-1,step)) {
-		return true;
-	    }
-	    else {
-		step--;
-		move(-1,-2,r,c,step);
-	    }
+	if (move(r-1,c+2,r,c,n) && solveH(r-1,c+2,n+1)) {
+	    return true;
 	}
+	if (move(r-1,c-2,r,c,n) && solveH(r-1,c-2,n+1)) {
+	    return true;
+	}
+	if (move(r+2,c+1,r,c,n) && solveH(r+2,c+1,n+1)) {
+	    return true;
+	}
+	if (move(r+2,c-1,r,c,n) && solveH(r+2,c-1,n+1)) {
+	    return true;
+	}
+	if (move(r-2,c+1,r,c,n) && solveH(r-2,c+1,n+1)) {
+	    return true;
+	}
+	if (move(r-2,c-1,r,c,n) && solveH(r-2,c-1,n+1)) {
+	    return true;
+	}
+	board[r][c] = 0;
+	n--;
 	return false;
     }
 
