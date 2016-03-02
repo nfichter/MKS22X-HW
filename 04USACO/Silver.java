@@ -9,6 +9,7 @@ public class Silver {
 
 	public Silver(Scanner in) {
 		land = new int[Integer.parseInt(in.next())][Integer.parseInt(in.next())];
+		moves = new int[land.length][land[0].length];
 		time = Integer.parseInt(in.next());
 		String lines;
 		char cur;
@@ -28,13 +29,14 @@ public class Silver {
 		yE = Integer.parseInt(in.next())-1;
 		xE = Integer.parseInt(in.next())-1;
 		
-		moves = land;
+		movesReplacedByLand();
+		land[yS][xS] = 1;
 	}
 
 	public void printLand() {
 		for (int r = 0; r < land.length; r++) {
 			for (int c = 0; c < land[0].length; c++) {
-				System.out.print(moves[r][c] + " ");
+				System.out.print(land[r][c] + " ");
 			}
 			System.out.println();
 		}
@@ -44,32 +46,61 @@ public class Silver {
 		return solve() + ",Fichter,Noah,7";
 	}
 	
-	public int solve() {
-		for (int r = 0; r < land.length; r++) {
-			for (int c = 0; c < land[0].length; c++) {
-				if (land[r][c] != -1) {
-					increment(r,c);
+	public int solve(){
+		for (int steps = 0; steps < time; steps++) {
+			resetMoves();
+			for (int r = 0; r < land.length; r++) {
+				for (int c = 0; c < land[0].length; c++) {
+					if (land[r][c] != -1) {
+						moves[r][c] = increment(r,c);
+					}
 				}
-				printLand();
-				System.out.println();
 			}
+			landReplacedByMoves();
 		}
-		moves = land;
-		return moves[yE][xE];
+		return land[yE][xE];
 	}
 	
-	public void increment(int row, int col) {
+	public int increment(int row, int col) {
+		int total = 0;
 		if (inLand(row-1,col)) {
-			moves[row-1][col] = land[row-1][col]+1;
+			total += land[row-1][col];
 		}
 		if (inLand(row,col-1)) {
-			moves[row][col-1] = land[row][col-1]+1;
+			total += land[row][col-1];
 		}
 		if (inLand(row+1,col)) {
-			moves[row+1][col] = land[row+1][col]+1;
+			total += land[row+1][col];
 		}
 		if (inLand(row,col+1)) {
-			moves[row][col+1] = land[row][col+1]+1;
+			total += land[row][col+1];
+		}
+		return total;
+	}
+	
+	public void resetMoves() {
+		for (int r = 0; r < moves.length; r++) {
+			for (int c = 0; c < moves[0].length; c++) {
+				if (moves[r][c] != -1) {
+					moves[r][c] = 0;
+				}
+			}
+		}
+	}
+	
+	public void movesReplacedByLand() {
+		for (int r = 0; r < moves.length; r++) {
+			for (int c = 0; c < moves[0].length; c++) {
+				moves[r][c] = land[r][c];
+			}
+		}
+	}
+	
+	public void landReplacedByMoves() {
+		for (int r = 0; r < moves.length; r++) {
+			for (int c = 0; c < moves[0].length; c++) {
+				land[r][c] = moves[r][c];
+			}
 		}
 	}
 	
