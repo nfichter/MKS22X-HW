@@ -11,30 +11,24 @@ public class Quick {
 		Random rand = new Random();
 		int index = rand.nextInt(right-left) + left;
 		int num = data[index];
-		System.out.println(index);
 		swap(data,index,right);
-		int curLeft = left;
-		int curRight = right-1;
-		int current = curLeft;
-		while (curLeft != curRight) {
-			System.out.println("cL: " + curLeft);
-			System.out.println("cR: " + curRight);
-			System.out.println("c: " + current);
-			printArray(data);
-			if (current == curLeft) {
-				if (data[current] > num) {
-					swap(data, current, curRight);
-				}
-				curLeft++;
-				current = curRight;
+		int[] copy = new int[data.length];
+		int cLeft = left;
+		int cRight = right-1;
+		for (int i = 0; i < data.length-1; i++) {
+			if (data[i] < num) {
+				copy[cLeft] = data[i];
+				cLeft++;
 			}
 			else {
-				if (data[current] < num) {
-					swap(data, current, curLeft);
-				}
-				curRight--;
-				current = curLeft;
+				copy[cRight] = data[i];
+				cRight--;
 			}
+		}
+		copy[copy.length-1] = num;
+		swap(copy,cLeft,copy.length-1);
+		for (int i = 0; i < data.length; i++) {
+			data[i] = copy[i];
 		}
 		return index;
 	}
