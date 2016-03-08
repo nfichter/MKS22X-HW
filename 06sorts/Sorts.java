@@ -65,7 +65,7 @@ public class Sorts {
 	}
 	
 	public static String name() {
-		return "7,Fichter,Noah";
+		return "6,Fichter,Noah";
 	}
 	
 	public static void printArray(int[] data) {
