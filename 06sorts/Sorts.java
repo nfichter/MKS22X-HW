@@ -1,5 +1,5 @@
-public class MergeSort {
-	public static int[] merge(int[] a, int[] b) {
+public class Sorts {
+	private static int[] merge(int[] a, int[] b) {
 		int[] ret = new int[a.length+b.length];
 		int aCount = 0;
 		int bCount = 0;
@@ -33,7 +33,7 @@ public class MergeSort {
 		return ret;
 	}
 	
-	public static int[] mergeSort(int[] data) {
+	private static int[] mergeH(int[] data) {
 		if (data.length <= 1) {
 			return data;
 		}
@@ -41,23 +41,31 @@ public class MergeSort {
 		int[] one = new int[data.length/2];
 		int[] two = new int[data.length-one.length];
 		
-		int count = 0;
-		
-		for (int i = 0; i < one.length; i++) {
-			one[i] = data[count];
-			count++;
+		for (int i = 0; i < data.length; i++) {
+			if (i < one.length) {
+				one[i] = data[i];
+			}
+			else {
+				two[i-one.length] = data[i];
+			}
 		}
 		
-		for (int j = count; j < data.length; j++) {
-			two[j-count] = data[j];
-			count++;
+		one = mergeH(one);
+		two = mergeH(two);
+		
+		int[] copy = merge(one,two);
+		for (int i = 0; i < copy.length; i++) {
+			data[i] = copy[i];
 		}
-		
-		mergeSort(one);
-		mergeSort(two);
-		
-		data = merge(one,two);
 		return data;
+	}
+	
+	public static void mergesort(int[] data) {
+		data = mergeH(data);
+	}
+	
+	public static String name() {
+		return "7,Fichter,Noah";
 	}
 	
 	public static void printArray(int[] data) {
@@ -69,6 +77,7 @@ public class MergeSort {
 	
 	public static void main(String[] args) {
 		int[] test = {4, 3, 0, 4, 9, 2, 11};
-		MergeSort.printArray(MergeSort.mergeSort(test));
+		Sorts.mergesort(test);
+		Sorts.printArray(test);
 	}
 }
