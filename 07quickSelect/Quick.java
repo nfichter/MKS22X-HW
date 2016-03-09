@@ -33,6 +33,26 @@ public class Quick {
 		return index;
 	}
 	
+	public static int quickselect(int[] data, int k, int left, int right) {
+		int index = partition(data,left,right);
+		
+		if (index == k) {
+			return data[k];
+		}
+		
+		else if (index < k) {
+			return quickselect(data,k,index,right);
+		}
+		
+		else {
+			return quickselect(data,k,left,index);
+		}
+	}
+	
+	public static int quickselect(int[] data, int k) {
+		return quickselect(data, k, 0, data.length-1);
+	}
+	
 	public static void printArray(int[] data) {
 		for (int i = 0; i < data.length; i++) {
 			System.out.print(data[i] + ", ");
@@ -42,7 +62,6 @@ public class Quick {
 	
 	public static void main(String[] args) {
 		int[] data = {1, 4, 5, 99, 2, 40, 420, 60, 32, -1};
-		System.out.println(partition(data,0,data.length-1));
-		printArray(data);
+		System.out.println(quickselect(data,2));
 	}
 }
