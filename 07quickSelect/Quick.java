@@ -7,50 +7,59 @@ public class Quick {
 		data[secondIndex] = hold;
 	}
 	
-	public static int partition(int[] data, int left, int right) {
+	private static void numSwap(int[] data, int firstIndex, int secondIndex, int num) {
+		data[firstIndex] = data[secondIndex];
+		data[secondIndex] = num;
+	}
+	
+	private static int partition(int[] data, int left, int right) {
 		Random rand = new Random();
 		int index = rand.nextInt(right-left) + left;
+		
 		int num = data[index];
-		swap(data,index,right);
-		int[] copy = new int[data.length];
+		
+		numSwap(data,index,right,num);
+		
 		int cLeft = left;
 		int cRight = right-1;
-		for (int i = 0; i < data.length-1; i++) {
-			if (data[i] < num) {
-				copy[cLeft] = data[i];
+		
+		while(cLeft != cRight) {
+			if (data[cLeft] < num) {
 				cLeft++;
 			}
 			else {
-				copy[cRight] = data[i];
+				swap(data,cLeft,cRight);
 				cRight--;
 			}
 		}
-		copy[copy.length-1] = num;
-		swap(copy,cLeft,copy.length-1);
-		for (int i = 0; i < data.length; i++) {
-			data[i] = copy[i];
+		
+		if (cRight < num) {
+			cRight++;
 		}
+		numSwap(data,right,cRight,num);
+		index = cRight;
+		
 		return index;
 	}
 	
-	public static int quickselect(int[] data, int k, int left, int right) {
+	private static int quickselect(int[] data, int k, int left, int right) {
 		int index = partition(data,left,right);
 		
 		if (index == k) {
 			return data[k];
 		}
 		
-		else if (index < k) {
-			return quickselect(data,k,index,right);
+		if (index > k) {
+			return quickselect(data,k,left,index);
 		}
 		
 		else {
-			return quickselect(data,k,left,index);
+			return quickselect(data,k,index,right);
 		}
 	}
 	
 	public static int quickselect(int[] data, int k) {
-		return quickselect(data, k, 0, data.length-1);
+		return quickselect(data,k,0,data.length-1);
 	}
 	
 	public static void printArray(int[] data) {
@@ -62,6 +71,6 @@ public class Quick {
 	
 	public static void main(String[] args) {
 		int[] data = {1, 4, 5, 99, 2, 40, 420, 60, 32, -1};
-		System.out.println(quickselect(data,2));
+		System.out.println(quickselect(data,6));
 	}
 }
