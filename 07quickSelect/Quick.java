@@ -14,7 +14,7 @@ public class Quick {
 	
 	private static int partition(int[] data, int left, int right) {
 		Random rand = new Random(4);
-		int index = rand.nextInt(right-left) + left;
+		int index = rand.nextInt(right-left+1) + left;
 		
 		int num = data[index];
 		
@@ -23,7 +23,7 @@ public class Quick {
 		int cLeft = left;
 		int cRight = right-1;
 		
-		while(cLeft != cRight) {
+		while(cLeft < cRight) {
 			if (data[cLeft] < num) {
 				cLeft++;
 			}
@@ -80,9 +80,15 @@ public class Quick {
 		}
 		System.out.println();
 	}
+
+    public static String name() {
+	return "6,Fichter,Noah";
+    }
 	
 	public static void main(String[] args) {
-		int[] data = {1, 4, 5, 99, 2, 40, 420, 60, 32, -1};
-		System.out.println(quickselect(data,6));
+		int[] data = {1, 4, 5, 99, 2, 40, 420, 60, 32, -2};
+		printArray(data);
+		System.out.println(quickselect(data,1));
+		printArray(data);
 	}
 }
