@@ -7,36 +7,29 @@ public class Quick {
 		data[secondIndex] = hold;
 	}
 	
-	private static void numSwap(int[] data, int firstIndex, int secondIndex, int num) {
-		data[firstIndex] = data[secondIndex];
-		data[secondIndex] = num;
-	}
-	
 	private static int partition(int[] data, int left, int right) {
-		Random rand = new Random(4);
-		int index = rand.nextInt(right-left+1) + left;
-		
+	    int index = (int)(Math.random()*(right-left+1)) + left;
 		int num = data[index];
 		
-		numSwap(data,index,right,num);
+		swap(data,index,right);
 		
 		int cLeft = left;
 		int cRight = right-1;
 		
 		while(cLeft < cRight) {
-			if (data[cLeft] < num) {
-				cLeft++;
+			if (data[cRight] > num) {
+			    swap(data,cLeft,cRight);
+			    cRight--;
 			}
 			else {
-				swap(data,cLeft,cRight);
-				cRight--;
+				cLeft++;
 			}
 		}
 		
 		if (cRight < num) {
 			cRight++;
 		}
-		numSwap(data,right,cRight,num);
+		swap(data,right,cRight);
 		index = cRight;
 		
 		return index;
@@ -49,7 +42,7 @@ public class Quick {
 			return data[k];
 		}
 		
-		if (index > k) {
+		if (index >= k) {
 			return quickselect(data,k,left,index);
 		}
 		
@@ -62,16 +55,17 @@ public class Quick {
 		return quickselect(data,k,0,data.length-1);
 	}
 	
-	public static void quicksort(int[] data, int left, int right) {
-		if (data.length > 1) {
+	public static void quickSort(int[] data, int left, int right) {
+	    System.out.println(left + " " + right);
+		if (left < right) {
 			int index = partition(data,left,right);
-			quicksort(data,left,index);
-			quicksort(data,index,right);
+			quickSort(data,left,index);
+			quickSort(data,index,right);
 		}
 	}
 	
-	public static void quicksort(int[] data) {
-		quicksort(data,0,data.length-1);
+	public static void quickSort(int[] data) {
+		quickSort(data,0,data.length-1);
 	}
 	
 	public static void printArray(int[] data) {
@@ -88,7 +82,7 @@ public class Quick {
 	public static void main(String[] args) {
 		int[] data = {1, 4, 5, 99, 2, 40, 420, 60, 32, -2};
 		printArray(data);
-		System.out.println(quickselect(data,1));
+	        quickSort(data);
 		printArray(data);
 	}
 }
