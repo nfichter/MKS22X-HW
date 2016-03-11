@@ -8,29 +8,32 @@ public class Quick {
 	}
 	
 	private static int partition(int[] data, int left, int right) {
-	    int index = (int)(Math.random()*(right-left+1)) + left;
+	    int index = (int)(Math.random()*(right-left)) + left;
 		int num = data[index];
 		
-		swap(data,index,right);
+		swap(data,index,left);
 		
-		int cLeft = left;
-		int cRight = right-1;
+		int cLeft = left+1;
+		int cRight = right;
 		
-		while(cLeft < cRight) {
-			if (data[cRight] > num) {
+		while(cRight > cLeft) {
+			if (data[cLeft] > num) {
 			    swap(data,cLeft,cRight);
 			    cRight--;
 			}
 			else {
-				cLeft++;
+			    cLeft++;
 			}
 		}
 		
-		if (cRight < num) {
-			cRight++;
+	        if (data[cRight] > data[left]) {
+		    swap(data,left,cRight-1);
+		    index = cRight-1;
 		}
-		swap(data,right,cRight);
-		index = cRight;
+		else {
+		    swap(data,left,cRight);
+		    index = cRight;
+		}
 		
 		return index;
 	}
@@ -56,11 +59,10 @@ public class Quick {
 	}
 	
 	public static void quickSort(int[] data, int left, int right) {
-	    System.out.println(left + " " + right);
-		if (left < right) {
+		if (right-left >= 1) {
 			int index = partition(data,left,right);
-			quickSort(data,left,index);
-			quickSort(data,index,right);
+			quickSort(data,left,index-1);
+			quickSort(data,index+1,right);
 		}
 	}
 	
