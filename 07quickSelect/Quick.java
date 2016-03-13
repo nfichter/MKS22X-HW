@@ -59,6 +59,7 @@ public class Quick {
     }
 	
     public static void quickSortUno(int[] data, int left, int right) {
+		System.out.println(left + " " + right);
 	if (right-left >= 1) {
 	    int index = partitionUno(data,left,right);
 	    quickSortUno(data,left,index-1);

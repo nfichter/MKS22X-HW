@@ -22,16 +22,20 @@ public class Driver2{
             choice = args[0];
         }
 
-        if(args.length >= 2){ //pick number of elements
+        if(args.length >= 2){
             size = Integer.parseInt(args[1]);
         }
 
-	int[] ary = new int[10000];
-	int[] ary1 = new int[10000];
-	int[] arraysary = new int[10000];
+	int[] ary = new int[100000];
+	int[] ary1 = new int[100000];
+	int[] arraysary = new int[100000];
 	fillRandom3(ary);
-	fillRandom3(ary1);
-	fillRandom3(arraysary);
+	for (int i = 0; i < ary1.length; i++) {
+		ary1[i] = ary[i];
+	}
+	for (int i = 0; i < arraysary.length; i++) {
+		arraysary[i] = ary[i];
+	}
 
 	long startarrays = System.currentTimeMillis();
 	Arrays.sort(arraysary);
