@@ -6,13 +6,13 @@ public class MyLinkedList {
 	size = 0;
     }
 
-    public boolean add(int data) {
+    public boolean add(int value) {
 	if (size == 0) {
-	    start = new LNode(data);
+	    start = new LNode(value);
 	    size++;
 	}
 	else {
-	    LNode next = new LNode(data);
+	    LNode next = new LNode(value);
 	    LNode current = start;
 	    while (current.getNext() != null) {
 		current = current.getNext();
@@ -20,6 +20,28 @@ public class MyLinkedList {
 	    current.setNext(next);
 	    size++;
 	}
+	return true;
+    }
+
+    public boolean add(int index, int value) {
+	if (index < 0 || index > size) {
+	    return false;
+	}
+	LNode next = new LNode(value);
+	if (size == index) {
+	    return add(value);
+	}
+	if (index == 0) {
+	    next.setNext(start);
+	    start = next;
+	    return true;
+	}
+	LNode current = start;
+	for (int i = 0; i < index-1; i++) {
+	    current = current.getNext();
+	}
+        next.setNext(current.getNext());
+	current.setNext(next);
 	return true;
     }
 
@@ -43,9 +65,32 @@ public class MyLinkedList {
 	return size;
     }
 
-    public int indexOf() {
+    public int remove(int index) {
+	if (index == 0) {
+	    int ret = start.getData();
+	    start = start.getNext();
+	    size--;
+	    return ret;
+	}
 	LNode current = start;
-	//fix this
+	for (int i = 0; i < index; i++) {
+	    current = current.getNext();
+	}
+	int ret = current.getData();
+	current = current.getNext();
+	size--;
+	return ret;
+    }
+
+    public int indexOf(int value) {
+	LNode current = start;
+	for (int i = 0; i < size; i++) {
+	    if (current.getData() == value) {
+		return i;
+	    }
+	    current = current.getNext();
+	}
+	return -1;
     }
 
     public String toString() {
@@ -91,14 +136,21 @@ public class MyLinkedList {
 
     public static void main(String[] args) {
 	MyLinkedList L = new MyLinkedList();
+	int[] a = new int[100];
+	for (int i = 0; i < 100; i++) {
+	    a[i] = i;
+	}
+	for (int i = 0; i < 100; i++) {
+	    L.add(i);
+	}
 	System.out.println(L.toString());
-	L.add(4);
-	L.add(5);
-	L.add(2);
-	System.out.println(L.toString());
-	System.out.println(L.get(2));
-	L.set(1,7);
-	System.out.println(L.toString());
-	System.out.println(L.size());
+	int getTest = -1;
+	for (int i = 0; i < 100; i++) {
+	    if (L.get(i) != i) {
+		getTest = i;
+	    }
+	}
+        System.out.println(getTest);
+	
     }
 }
