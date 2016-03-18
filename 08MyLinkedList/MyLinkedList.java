@@ -7,6 +7,25 @@ public class MyLinkedList {
 	size = 0;
     }
 
+    public boolean addOld(int value) {
+	if (size == 0) {
+	    start = new LNode(value);
+	    end = start;
+	    size++;
+	}
+	else {
+	    LNode next = new LNode(value);
+	    LNode current = start;
+	    while (current.getNext() != null) {
+		current = current.getNext();
+	    }
+	    current.setNext(next);
+	    end = current.getNext();
+	    size++;
+	}
+	return true;
+    }
+
     public boolean add(int value) {
 	if (size == 0) {
 	    start = new LNode(value);
@@ -137,21 +156,23 @@ public class MyLinkedList {
 
     public static void main(String[] args) {
 	MyLinkedList L = new MyLinkedList();
-	int[] a = new int[100];
-	for (int i = 0; i < 100; i++) {
-	    a[i] = i;
-	}
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 10000000; i++) {
 	    L.add(i);
 	}
-	System.out.println(L.toString());
-	int getTest = -1;
-	for (int i = 0; i < 100; i++) {
-	    if (L.get(i) != i) {
-		getTest = i;
-	    }
-	}
-        System.out.println(getTest);
 	
+	long start,end;
+	start = System.currentTimeMillis();
+	for (int i = 0; i < 100000; i++) {
+	    L.addOld(i);
+	}
+	end = System.currentTimeMillis();
+	System.out.println("Time for addOld(): " + (end-start)/1000.0 + "seconds.");
+
+	start = System.currentTimeMillis();
+	for (int i = 0; i < 100000; i++) {
+	    L.add(i);
+	}
+	end = System.currentTimeMillis();
+	System.out.println("Time for add(): " + (end-start)/1000.0 + "seconds.");
     }
 }
