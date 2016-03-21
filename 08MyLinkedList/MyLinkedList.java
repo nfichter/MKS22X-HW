@@ -1,21 +1,21 @@
-public class MyLinkedList {
-    LNode start;
-    LNode end;
+public class MyLinkedList<T> {
+    LNode<T> start;
+    LNode<T> end;
     int size;
 
     public MyLinkedList() {
 	size = 0;
     }
 
-    public boolean addOld(int value) {
+    public boolean addOld(T thing) {
 	if (size == 0) {
-	    start = new LNode(value);
+	    start = new LNode<T>(thing);
 	    end = start;
 	    size++;
 	}
 	else {
-	    LNode next = new LNode(value);
-	    LNode current = start;
+	    LNode<T> next = new LNode<T>(thing);
+	    LNode<T> current = start;
 	    while (current.getNext() != null) {
 		current = current.getNext();
 	    }
@@ -26,34 +26,34 @@ public class MyLinkedList {
 	return true;
     }
 
-    public boolean add(int value) {
+    public boolean add(T thing) {
 	if (size == 0) {
-	    start = new LNode(value);
+	    start = new LNode<T>(thing);
 	    end = start;
 	    size++;
 	}
 	else {
-	    LNode next = new LNode(value);
+	    LNode<T> next = new LNode<T>(thing);
 	    end.setNext(next);
 	    size++;
 	}
 	return true;
     }
 
-    public boolean add(int index, int value) {
+    public boolean add(int index, T thing) {
 	if (index < 0 || index > size) {
 	    return false;
 	}
-	LNode next = new LNode(value);
+	LNode<T> next = new LNode<T>(thing);
 	if (size == index) {
-	    return add(value);
+	    return add(thing);
 	}
 	if (index == 0) {
 	    next.setNext(start);
 	    start = next;
 	    return true;
 	}
-	LNode current = start;
+	LNode<T> current = start;
 	for (int i = 0; i < index-1; i++) {
 	    current = current.getNext();
 	}
@@ -62,115 +62,115 @@ public class MyLinkedList {
 	return true;
     }
 
-    public int get(int index) {
-	LNode current = start;
+    public T get(int index) {
+	LNode<T> current = start;
 	for (int i = 0; i < index; i++) {
 	    current = current.getNext();
 	}
 	return current.getData();
     }
 
-    public int set(int index, int newValue) {
-	LNode current = start;
+    public T set(int index, T newThing) {
+	LNode<T> current = start;
 	for (int i = 0; i < index; i++) {
 	    current = current.getNext();
 	}
         if (index == size-1) {
 	    end = current;
 	}
-	return current.setData(newValue);
+	return current.setData(newThing);
     }
 
     public int size() {
 	return size;
     }
 
-    public int remove(int index) {
+    public T remove(int index) {
 	if (index == 0) {
-	    int ret = start.getData();
+	    T ret = start.getData();
 	    start = start.getNext();
 	    size--;
 	    return ret;
 	}
-	LNode current = start;
+	LNode<T> current = start;
 	for (int i = 0; i < index; i++) {
 	    current = current.getNext();
 	}
-	int ret = current.getData();
+	T ret = current.getData();
 	current = current.getNext();
 	size--;
 	return ret;
     }
 
-    public int indexOf(int value) {
-	LNode current = start;
+    /*public int indexOf(T thing) {
+	LNode<T> current = start;
 	for (int i = 0; i < size; i++) {
-	    if (current.getData() == value) {
+	    if (current.getData().equals(thing)) {
 		return i;
 	    }
 	    current = current.getNext();
 	}
 	return -1;
-    }
+	}*/
 
     public String toString() {
 	String ret = "[";
-	LNode current = start;
+	LNode<T> current = start;
 	while (current != null && current.getNext() != null) {
-	    ret += current.getData() + ", ";
+	    ret += current.getData().toString() + ", ";
 	    current = current.getNext();
 	}
 	if (current != null) {
-	    ret += current.getData();
+	    ret += current.getData().toString();
 	}
 	ret += "]";
 	return ret;
     }
 
-    private class LNode {
-	int data;
-	LNode next;
+    private class LNode<T> {
+	T data;
+	LNode<T> next;
 
-	public LNode(int data) {
+	public LNode(T data) {
 	    this.data = data;
 	}
 
-	public LNode getNext() {
+	public LNode<T> getNext() {
 	    return next;
 	}
 
-	public LNode setNext(LNode next) {
+	public LNode<T> setNext(LNode<T> next) {
 	    this.next = next;
 	    return next;
 	}
 
-	public int getData() {
+	public T getData() {
 	    return data;
 	}
 
-	public int setData(int data) {
+	public T setData(T data) {
 	    this.data = data;
 	    return data;
 	}
     }
 
     public static void main(String[] args) {
-	MyLinkedList L = new MyLinkedList();
+	MyLinkedList<Integer> L = new MyLinkedList<Integer>();
 	for (int i = 0; i < 10000000; i++) {
-	    L.add(i);
+	    L.add(new Integer(i));
 	}
 	
 	long start,end;
 	start = System.currentTimeMillis();
 	for (int i = 0; i < 100000; i++) {
-	    L.addOld(i);
+	    L.addOld(new Integer(i));
 	}
 	end = System.currentTimeMillis();
 	System.out.println("Time for addOld(): " + (end-start)/1000.0 + "seconds.");
 
 	start = System.currentTimeMillis();
 	for (int i = 0; i < 100000; i++) {
-	    L.add(i);
+	    L.add(new Integer(i));
 	}
 	end = System.currentTimeMillis();
 	System.out.println("Time for add(): " + (end-start)/1000.0 + "seconds.");
