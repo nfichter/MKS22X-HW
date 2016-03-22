@@ -35,6 +35,7 @@ public class MyLinkedList<T> {
 	else {
 	    LNode<T> next = new LNode<T>(thing);
 	    end.setNext(next);
+	    end = next;
 	    size++;
 	}
 	return true;
@@ -42,7 +43,7 @@ public class MyLinkedList<T> {
 
     public boolean add(int index, T thing) {
 	if (index < 0 || index > size) {
-	    return false;
+	    throw new IndexOutOfBoundsException();
 	}
 	LNode<T> next = new LNode<T>(thing);
 	if (size == index) {
@@ -51,6 +52,7 @@ public class MyLinkedList<T> {
 	if (index == 0) {
 	    next.setNext(start);
 	    start = next;
+	    size++;
 	    return true;
 	}
 	LNode<T> current = start;
@@ -63,6 +65,9 @@ public class MyLinkedList<T> {
     }
 
     public T get(int index) {
+	if (index < 0 || index >= size) {
+	    throw new IndexOutOfBoundsException();
+	}
 	LNode<T> current = start;
 	for (int i = 0; i < index; i++) {
 	    current = current.getNext();
@@ -71,6 +76,9 @@ public class MyLinkedList<T> {
     }
 
     public T set(int index, T newThing) {
+	if (index < 0 || index >= size) {
+	    throw new IndexOutOfBoundsException();
+	}
 	LNode<T> current = start;
 	for (int i = 0; i < index; i++) {
 	    current = current.getNext();
@@ -86,6 +94,9 @@ public class MyLinkedList<T> {
     }
 
     public T remove(int index) {
+	if (index < 0 || index >= size) {
+	    throw new IndexOutOfBoundsException();
+	}
 	if (index == 0) {
 	    T ret = start.getData();
 	    start = start.getNext();
@@ -98,6 +109,13 @@ public class MyLinkedList<T> {
 	}
 	T ret = current.getData();
 	current = current.getNext();
+	LNode<T> cur2 = start;
+	for (int i = 0; i < index-1; i++) {
+	    cur2 = cur2.getNext();
+	}
+	if (index == size-1) {
+	    end = cur2.getNext();
+	}
 	size--;
 	return ret;
     }
@@ -127,6 +145,14 @@ public class MyLinkedList<T> {
 	return ret;
     }
 
+    public String toString(boolean debug) {
+	String ret = toString();
+	if (debug) {
+	    ret += "\nstart: " + start.getData().toString() + " end: " + end.getData().toString() + " size: " + size;
+	}
+	return ret;
+    }
+
     private class LNode<T> {
 	T data;
 	LNode<T> next;
@@ -152,27 +178,5 @@ public class MyLinkedList<T> {
 	    this.data = data;
 	    return data;
 	}
-    }
-
-    public static void main(String[] args) {
-	MyLinkedList<Integer> L = new MyLinkedList<Integer>();
-	for (int i = 0; i < 10000000; i++) {
-	    L.add(new Integer(i));
-	}
-	
-	long start,end;
-	start = System.currentTimeMillis();
-	for (int i = 0; i < 100000; i++) {
-	    L.addOld(new Integer(i));
-	}
-	end = System.currentTimeMillis();
-	System.out.println("Time for addOld(): " + (end-start)/1000.0 + "seconds.");
-
-	start = System.currentTimeMillis();
-	for (int i = 0; i < 100000; i++) {
-	    L.add(new Integer(i));
-	}
-	end = System.currentTimeMillis();
-	System.out.println("Time for add(): " + (end-start)/1000.0 + "seconds.");
     }
 }
