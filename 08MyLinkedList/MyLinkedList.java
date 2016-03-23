@@ -1,7 +1,9 @@
-public class MyLinkedList<T> {
-    LNode<T> start;
-    LNode<T> end;
-    int size;
+import java.util.*;
+
+public class MyLinkedList<T> implements Iterable<T>{
+    private LNode start;
+    private LNode end;
+    private int size;
 
     public MyLinkedList() {
 	size = 0;
@@ -9,13 +11,13 @@ public class MyLinkedList<T> {
 
     public boolean addOld(T thing) {
 	if (size == 0) {
-	    start = new LNode<T>(thing);
+	    start = new LNode(thing);
 	    end = start;
 	    size++;
 	}
 	else {
-	    LNode<T> next = new LNode<T>(thing);
-	    LNode<T> current = start;
+	    LNode next = new LNode(thing);
+	    LNode current = start;
 	    while (current.getNext() != null) {
 		current = current.getNext();
 	    }
@@ -28,12 +30,12 @@ public class MyLinkedList<T> {
 
     public boolean add(T thing) {
 	if (size == 0) {
-	    start = new LNode<T>(thing);
+	    start = new LNode(thing);
 	    end = start;
 	    size++;
 	}
 	else {
-	    LNode<T> next = new LNode<T>(thing);
+	    LNode next = new LNode(thing);
 	    end.setNext(next);
 	    end = next;
 	    size++;
@@ -45,7 +47,7 @@ public class MyLinkedList<T> {
 	if (index < 0 || index > size) {
 	    throw new IndexOutOfBoundsException();
 	}
-	LNode<T> next = new LNode<T>(thing);
+	LNode next = new LNode(thing);
 	if (size == index) {
 	    return add(thing);
 	}
@@ -55,7 +57,7 @@ public class MyLinkedList<T> {
 	    size++;
 	    return true;
 	}
-	LNode<T> current = start;
+	LNode current = start;
 	for (int i = 0; i < index-1; i++) {
 	    current = current.getNext();
 	}
@@ -68,7 +70,7 @@ public class MyLinkedList<T> {
 	if (index < 0 || index >= size) {
 	    throw new IndexOutOfBoundsException();
 	}
-	LNode<T> current = start;
+	LNode current = start;
 	for (int i = 0; i < index; i++) {
 	    current = current.getNext();
 	}
@@ -79,7 +81,7 @@ public class MyLinkedList<T> {
 	if (index < 0 || index >= size) {
 	    throw new IndexOutOfBoundsException();
 	}
-	LNode<T> current = start;
+	LNode current = start;
 	for (int i = 0; i < index; i++) {
 	    current = current.getNext();
 	}
@@ -103,7 +105,7 @@ public class MyLinkedList<T> {
 	    size--;
 	    return ret;
 	}
-	LNode<T> current = start;
+	LNode current = start;
 	for (int i = 0; i < index-1; i++) {
 	    current = current.getNext();
 	}
@@ -120,7 +122,7 @@ public class MyLinkedList<T> {
     }
 
     /*public int indexOf(T thing) {
-	LNode<T> current = start;
+	LNode current = start;
 	for (int i = 0; i < size; i++) {
 	    if (current.getData().equals(thing)) {
 		return i;
@@ -132,7 +134,7 @@ public class MyLinkedList<T> {
 
     public String toString() {
 	String ret = "[";
-	LNode<T> current = start;
+	LNode current = start;
 	while (current != null && current.getNext() != null) {
 	    ret += current.getData().toString() + ", ";
 	    current = current.getNext();
@@ -151,20 +153,50 @@ public class MyLinkedList<T> {
 	}
 	return ret;
     }
+	
+	public Iterator<T> iterator() {
+		return new MyLinkedListIterator(this);
+	}
+	
+	public class MyLinkedListIterator implements Iterator<T> {
+		int pos;
+		LNode current;
+		
+		public MyLinkedListIterator(MyLinkedList<T> L) {
+			pos = 0;
+			current = L.start;
+		}
+		
+		public boolean hasNext() {
+			if (current.getNext() != null) {
+				return true;
+			}
+			return false;
+		}
+		public T next() {
+			pos = 1;
+			T ret = current.getData();
+			current = current.getNext();
+			return ret;
+		}
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+	}
 
-    private class LNode<T> {
+    private class LNode {
 	T data;
-	LNode<T> next;
+	LNode next;
 
 	public LNode(T data) {
 	    this.data = data;
 	}
 
-	public LNode<T> getNext() {
+	public LNode getNext() {
 	    return next;
 	}
 
-	public LNode<T> setNext(LNode<T> next) {
+	public LNode setNext(LNode next) {
 	    this.next = next;
 	    return next;
 	}
@@ -178,4 +210,12 @@ public class MyLinkedList<T> {
 	    return data;
 	}
     }
+	
+	public static void main(String[] args) {
+		MyLinkedList<String> L = new MyLinkedList<String>();
+		for (int i = 0; i < 100; i++) {
+			L.add(i+"");
+		}
+		
+	}
 }
