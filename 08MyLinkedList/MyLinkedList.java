@@ -104,18 +104,17 @@ public class MyLinkedList<T> {
 	    return ret;
 	}
 	LNode<T> current = start;
-	for (int i = 0; i < index; i++) {
+	for (int i = 0; i < index-1; i++) {
 	    current = current.getNext();
 	}
-	T ret = current.getData();
-	current = current.getNext();
-	LNode<T> cur2 = start;
-	for (int i = 0; i < index-1; i++) {
-	    cur2 = cur2.getNext();
+	
+	if (index < size-1) {
+	    current.setNext(current.getNext().getNext());
 	}
-	if (index == size-1) {
-	    end = cur2.getNext();
+	else {
+	    end = current;
 	}
+	T ret = current.getNext().getData();
 	size--;
 	return ret;
     }
