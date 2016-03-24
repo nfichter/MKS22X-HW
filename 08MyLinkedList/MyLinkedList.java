@@ -122,15 +122,15 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     /*public int indexOf(T thing) {
-	LNode current = start;
-	for (int i = 0; i < size; i++) {
-	    if (current.getData().equals(thing)) {
-		return i;
-	    }
-	    current = current.getNext();
-	}
-	return -1;
-	}*/
+      LNode current = start;
+      for (int i = 0; i < size; i++) {
+      if (current.getData().equals(thing)) {
+      return i;
+      }
+      current = current.getNext();
+      }
+      return -1;
+      }*/
 
     public String toString() {
 	String ret = "[";
@@ -154,35 +154,35 @@ public class MyLinkedList<T> implements Iterable<T>{
 	return ret;
     }
 	
-	public Iterator<T> iterator() {
-		return new MyLinkedListIterator(this);
-	}
+    public Iterator<T> iterator() {
+	return new MyLinkedListIterator(this);
+    }
 	
-	public class MyLinkedListIterator implements Iterator<T> {
-		int pos;
-		LNode current;
+    public class MyLinkedListIterator implements Iterator<T> {
+	LNode current;
 		
-		public MyLinkedListIterator(MyLinkedList<T> L) {
-			pos = 0;
-			current = L.start;
-		}
-		
-		public boolean hasNext() {
-			if (current.getNext() != null) {
-				return true;
-			}
-			return false;
-		}
-		public T next() {
-			pos = 1;
-			T ret = current.getData();
-			current = current.getNext();
-			return ret;
-		}
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
+	public MyLinkedListIterator(MyLinkedList<T> L) {
+	    current = L.start;
 	}
+		
+	public boolean hasNext() {
+	    if (current != null) {
+		return true;
+	    }
+	    return false;
+	}
+	public T next() {
+	    if (!hasNext()) {
+		throw new NoSuchElementException();
+	    }
+	    T ret = current.getData();
+	    current = current.getNext();
+	    return ret;
+	}
+	public void remove() {
+	    throw new UnsupportedOperationException();
+	}
+    }
 
     private class LNode {
 	T data;
@@ -211,11 +211,15 @@ public class MyLinkedList<T> implements Iterable<T>{
 	}
     }
 	
-	public static void main(String[] args) {
-		MyLinkedList<String> L = new MyLinkedList<String>();
-		for (int i = 0; i < 100; i++) {
-			L.add(i+"");
-		}
-		
+    public static void main(String[] args) {
+	MyLinkedList<String> L = new MyLinkedList<String>();
+	for (int i = 0; i < 100; i++) {
+	    L.add(i+"");
 	}
+	Iterator iter = L.iterator();
+	while (iter.hasNext()) {
+	    System.out.print(iter.next() + " ");
+	}
+	System.out.println();
+    }
 }
