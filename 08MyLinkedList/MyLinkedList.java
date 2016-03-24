@@ -216,9 +216,11 @@ public class MyLinkedList<T> implements Iterable<T>{
 	for (int i = 0; i < 100; i++) {
 	    L.add(i+"");
 	}
-	Iterator iter = L.iterator();
-	while (iter.hasNext()) {
-	    System.out.print(iter.next() + " ");
+	Iterator<String> iter = L.iterator();
+	Iterator<String> iter2 = L.iterator();
+	iter2.next();
+	while (iter2.hasNext()) {
+	    System.out.println(iter.next() + " vs " + iter2.next());
 	}
 	System.out.println();
     }
