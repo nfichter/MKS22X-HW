@@ -32,4 +32,8 @@ public class MyStack<T> {
 	public boolean isEmpty() {
 		return size() == 0;
 	}
+
+	public String toString() {
+	    return MLL.toString();
+	}
 }
