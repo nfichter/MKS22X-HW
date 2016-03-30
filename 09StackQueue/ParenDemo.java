@@ -16,65 +16,58 @@ public class ParenDemo<T> extends MyStack<T> {
 				sNew += letter;
 			}
 		}
-		System.out.println("check");
+		
+		System.out.println("sNew: "+ sNew);
+		
 		for (int i = 0; i < sNew.length(); i++) {
 			if (i < sNew.length()-1) {
 				letter = sNew.substring(i, i+1);
 			}
 			else {
-				letter = s.substring(i);
+				letter = sNew.substring(i);
 			}
-			System.out.println("letter: " + letter);
-			if (MS.isEmpty()) {
-				if (isClose(letter)) {
-					return false;	
+			
+			System.out.println("letter at " + i + ": " + letter);
+			
+			if (isClose(letter)) {
+				if (MS.isEmpty()) {
+					return false;
 				}
 				else {
-					MS.push(letter);
+					System.out.println("peek: " + MS.peek());
+					System.out.println("match: " + match(letter));
+					if (MS.peek().equals(match(letter))) {
+						MS.pop();
+					}
+					else {
+						return false;
+					}
 				}
 			}
 			else {
-				System.out.println("peek: " + MS.peek());
-				if (MS.peek() == "(") {
-					if (!(letter.equals(")"))) {
-						return false;
-					}
-					else {
-						MS.pop();
-					}
-				}
-				if (MS.peek() == "{") {
-					if (!(letter.equals("}"))) {
-						return false;
-					}
-					else {
-						MS.pop();
-					}
-				}
-				if (MS.peek() == "[") {
-					if (!(letter.equals("]"))) {
-						return false;
-					}
-					else {
-						MS.pop();
-					}
-				}
-				if (MS.peek() == "<") {
-					if (!(letter.equals(">"))) {
-						return false;
-					}
-					else {
-						MS.pop();
-					}
-				}
-			}	
+				MS.push(letter);
+			}
 		}
-		System.out.println(MS.peek());
-		if (!(MS.isEmpty())) {
+		
+		if (!MS.isEmpty()) {
 			return false;
 		}
-		System.out.println("check3");
 		return true;
+	}
+	
+	public static String match(String letter) {
+		if (letter.equals(")")) {
+			return "(";
+		}
+		if (letter.equals("}")) {
+			return "{";
+		}
+		if (letter.equals("]")) {
+			return "[";
+		}
+		else {
+			return "<";
+		}
 	}
 	
 	public static boolean isAll(String letter) {
