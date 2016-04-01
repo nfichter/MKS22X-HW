@@ -1,18 +1,20 @@
+import java.util.*;
+
 public class MyDeque<T> {
-    private T[] circle;
+    private Object[] circle;
     private int size;
     private int start;
     private int end;
 
     public MyDeque() {
-	circle = new T[1];
+	circle = new Object[1];
 	size = 0;
     }
     
     public void grow() {
-	T[] hold = new T[circle.length*2];
+	Object[] hold = new Object[circle.length*2];
 	for (int i = start; i < end; i++) {
-	    hold[i-start] = T[i];
+	    hold[i-start] = circle[i];
 	}
     }
 
@@ -21,7 +23,7 @@ public class MyDeque<T> {
 	    grow();
 	}
 	if (start == 0) {
-	    circle[size-1] = value;
+	    circle[circle.length-1] = value;
 	    start = size-1;
 	}
 	else {
@@ -56,6 +58,7 @@ public class MyDeque<T> {
 	if (size == 0) {
 	    throw new NoSuchElementException();
 	}
+	Object ret = circle[start];
         circle[start] = null;
 	size--;
 	if (start == size-1) {
@@ -64,12 +67,14 @@ public class MyDeque<T> {
 	else {
 	    start++;
 	}
+	return (T)ret;
     }
 
     public T removeLast() {
 	if (size == 0) {
 	    throw new NoSuchElementException();
 	}
+	Object ret = circle[end];
 	circle[end] = null;
 	size--;
 	if (end == 0) {
@@ -78,33 +83,43 @@ public class MyDeque<T> {
 	else {
 	    end--;
 	}
+	return (T)ret;
     }
 
     public T getFirst() {
 	if (size == 0) {
 	    throw new NoSuchElementException();
 	}
-	return circle[start];
+	return (T)circle[start];
     }
 
     public T getLast() {
 	if (size == 0) {
 	    throw new NoSuchElementException();
 	}
-	return circle[end];
+	return (T)circle[end];
     }
 
     public String toString() {
 	String ret = "[";
-	for (int i = 0; i < circle.size-2; i++) {
-	    ret += circle[i] + ", "
+	for (int i = 0; i < circle.length-2; i++) {
+	    ret += circle[i] + ", ";
 	}
-	ret += circle[circle.size-1] + "]";
+	ret += circle[circle.length-1] + "]";
 	ret += "\nSize: " + size + ", Pos of start: " + start + ", Start: " + circle[start] + ", Pos of end: " + end + ", End: " + circle[end];
 	return ret;
     }
 
     public static void main(String[] args) {
 	MyDeque<Integer> md = new MyDeque<Integer>();
+	System.out.println(md.toString());
+	md.addFirst(3);
+	System.out.println(md.toString());
+	md.addLast(2);
+	System.out.println(md.toString());
+	md.removeLast();
+	System.out.println(md.toString());
+	System.out.println(md.getFirst());
+	System.out.println(md.getLast());
     }
 }
