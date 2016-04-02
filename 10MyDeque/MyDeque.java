@@ -7,8 +7,8 @@ public class MyDeque<T> {
     private int end;
 
     public MyDeque() {
-	circle = new Object[1];
-	size = 0;
+		circle = new Object[1];
+		size = 0;
     }
     
     public void grow() {
@@ -16,6 +16,7 @@ public class MyDeque<T> {
 	for (int i = start; i < end; i++) {
 	    hold[i-start] = circle[i];
 	}
+	circle = hold;
     }
 
     public void addFirst(T value) {
@@ -24,7 +25,7 @@ public class MyDeque<T> {
 	}
 	if (start == 0) {
 	    circle[circle.length-1] = value;
-	    start = size-1;
+	    start = circle.length-1;
 	}
 	else {
 	    circle[start-1] = value;
@@ -106,7 +107,12 @@ public class MyDeque<T> {
 	    ret += circle[i] + ", ";
 	}
 	ret += circle[circle.length-1] + "]";
-	ret += "\nSize: " + size + ", Pos of start: " + start + ", Start: " + circle[start] + ", Pos of end: " + end + ", End: " + circle[end];
+	ret += "\nSize: " + size;
+	ret += ", Length: " + circle.length;
+	ret += ", Pos of start: " + start;
+	ret += ", Start: " + circle[start];
+	ret += ", Pos of end: " + end;
+	ret += ", End: " + circle[end];
 	return ret;
     }
 
