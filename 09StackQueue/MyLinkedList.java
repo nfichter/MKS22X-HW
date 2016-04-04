@@ -49,7 +49,7 @@ public class MyLinkedList<T> implements Iterable<T>{
 			throw new IndexOutOfBoundsException();
 		}
 		LNode next = new LNode(thing);
-		if (size == index) {
+		if (size == index || size == 0) {
 			return add(thing);
 		}
 		if (index == 0) {
