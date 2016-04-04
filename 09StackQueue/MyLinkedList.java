@@ -161,31 +161,58 @@ public class MyLinkedList<T> implements Iterable<T>{
 	public Iterator<T> iterator() {
 		return new MyLinkedListIterator(this);
 	}
+
+	public Iterator<T> iteratorBack() {
+	    return new MyLinkedListIteratorBack(this);
+	}
 	
 	public class MyLinkedListIterator implements Iterator<T> {
-		int pos;
 		LNode current;
 		
 		public MyLinkedListIterator(MyLinkedList<T> L) {
-			pos = 0;
 			current = L.start;
 		}
 		
 		public boolean hasNext() {
-			if (current.getNext() != null) {
+			if (current != null) {
 				return true;
 			}
 			return false;
 		}
 		public T next() {
-			pos = 1;
 			T ret = current.getData();
 			current = current.getNext();
 			return ret;
 		}
+
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
+	}
+
+	public class MyLinkedListIteratorBack implements Iterator<T> {
+	    LNode current;
+	    
+	    public MyLinkedListIteratorBack(MyLinkedList<T> L) {
+		current = L.end;
+	    }
+	    
+	    public boolean hasNext() {
+		if (current == null) {
+		    return false;
+		}
+		return true;
+	    }
+
+	    public T next() {
+		T ret = current.getData();
+		current = current.getPrev();
+		return ret;
+	    }
+
+	    public void remove() {
+		throw new UnsupportedOperationException();
+	    }
 	}
 
 	private class LNode {
@@ -227,9 +254,19 @@ public class MyLinkedList<T> implements Iterable<T>{
 	
 	public static void main(String[] args) {
 		MyLinkedList<String> L = new MyLinkedList<String>();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			L.add(i+"");
 		}
-		
+		Iterator forwards = L.iterator();
+		while (forwards.hasNext()) {
+		    System.out.print(forwards.next() + " ");
+		}
+		System.out.println();
+		System.out.println();
+		Iterator backwards = L.iteratorBack();
+		while (backwards.hasNext()) {
+		    System.out.print(backwards.next() + " ");
+		}
+		System.out.println();
 	}
 }
