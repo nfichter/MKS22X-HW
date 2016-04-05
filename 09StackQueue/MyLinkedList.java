@@ -115,15 +115,17 @@ public class MyLinkedList<T> implements Iterable<T>{
 			current = current.getNext();
 		}
 		
+		T ret = null;
 		if (index < size-1) {
 			current.setNext(current.getNext().getNext());
 			current.getNext().setPrev(current);
+			ret = current.getNext().getData();
 		}
 		else {
 			end = current;
+			ret = current.getNext().getData();
 			current.setNext(null);
 		}
-		T ret = current.getNext().getData();
 		size--;
 		return ret;
 	}
