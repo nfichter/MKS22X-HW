@@ -13,9 +13,13 @@ public class MyDeque<T> {
     
     public void grow() {
 	Object[] hold = new Object[circle.length*2];
+	int x = 0;
 	for (int i = start; i < end; i++) {
 	    hold[i-start] = circle[i];
+	    x = i;
 	}
+	start = 0;
+	end = x;
 	circle = hold;
     }
 
@@ -121,9 +125,11 @@ public class MyDeque<T> {
 	System.out.println(md.toString());
 	md.addFirst(3);
 	System.out.println(md.toString());
-	md.addLast(2);
+	md.addFirst(4);
 	System.out.println(md.toString());
-	md.removeLast();
+	md.addFirst(2);
+	System.out.println(md.toString());
+	md.addFirst(6);
 	System.out.println(md.toString());
 	System.out.println(md.getFirst());
 	System.out.println(md.getLast());
