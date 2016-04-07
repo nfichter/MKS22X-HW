@@ -2,13 +2,12 @@ import java.util.*;
 
 public class Driver {
 	public static void main(String[] args) {
-
 		MyDeque<Integer> d = new MyDeque<Integer>();
 		ArrayDeque<Integer> ad = new ArrayDeque<Integer>();
 
 		// Limit the number of times addFirst and addLast is done
 
-		int limit = 1000000;
+		int limit = 10000;
 
 		if (args.length > 0) {
 			limit = Integer.parseInt(args[0]);
@@ -17,7 +16,7 @@ public class Driver {
 		// Add to the head and to the tail
 
 		for (int i = 0; i < limit/2; i++) {
-			Integer r1 = (int) (Math.random() * 1000000);
+			Integer r1 = (int) (Math.random() * 10000);
 
 			// Add first
 			d.addFirst(r1);
@@ -25,7 +24,7 @@ public class Driver {
 		}
 		
 		for (int i = 0; i < limit/2; i++) {
-			Integer r2 = (int) (Math.random() * 1000000);
+			Integer r2 = (int) (Math.random() * 10000);
 			// Add last
 			d.addLast(r2);
 			ad.addLast(r2);
@@ -33,7 +32,8 @@ public class Driver {
 
 		// Test if adding worked by removing elements
 
-		for (int i = 0; i < limit; i++) {
+		for (int i = 0; i < limit/2; i++) {
+			System.out.println(d.getFirst() + " " + ad.getFirst());
 			if (!d.getFirst().equals(ad.getFirst())) {
 				System.out.println("Test #0 (addFirst) failed at: " + i + "!");
 				System.exit(0);

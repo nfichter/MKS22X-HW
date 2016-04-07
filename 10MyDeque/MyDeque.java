@@ -9,25 +9,58 @@ public class MyDeque<T> {
     public MyDeque() {
 		circle = new Object[1];
 		size = 0;
+		start = 0;
+		end = 0;
     }
-    
-    public void grow() {
-	Object[] hold = new Object[circle.length*2];
-	int x = 0;
-	for (int i = start; i < end; i++) {
-	    hold[i-start] = circle[i];
-	    x = i;
+	
+	public int size() {
+		return size;
 	}
-	start = 0;
-	end = x;
-	circle = hold;
-    }
+    
+	public void grow() {
+		Object[] hold = new Object[circle.length*2];
+		int x = 0;
+		if (end < start) {
+			for (int i = start; i <= size; i++) {
+				hold[i-start] = circle[i];
+				x = i;
+			}
+			x--;
+			for (int i = 0; i <= end; i++) {
+				hold[x+i] = circle[i];
+			}
+			start = 0;
+			if (size > 0) {
+				end = size-1;
+			}
+			else {
+				end = 0;
+			}
+			circle = hold;
+		}
+		else {
+			for (int i = start; i <= end; i++) {
+				hold[i-start] = circle[i];
+			}
+			start = 0;
+			if (size > 0) {
+				end = size-1;
+			}
+			else {
+				end = 0;
+			}
+			circle = hold;
+		}
+	}
 
     public void addFirst(T value) {
-	if (size == circle.length) {
+	if (size >= circle.length-1) {
 	    grow();
 	}
-	if (start == 0) {
+	if (size == 0) {
+		circle[0] = value;
+	}
+	else if (start == 0) {
 	    circle[circle.length-1] = value;
 	    start = circle.length-1;
 	}
@@ -36,13 +69,10 @@ public class MyDeque<T> {
 	    start--;
 	}
 	size ++;
-	if (size == 1) {
-	    end = start;
-	}
     }
 
     public void addLast(T value) {
-	if (size == circle.length) {
+	if (size >= circle.length-1) {
 	    grow();
 	}
 	if (start == size-1) {
@@ -64,9 +94,9 @@ public class MyDeque<T> {
 	    throw new NoSuchElementException();
 	}
 	Object ret = circle[start];
-        circle[start] = null;
+	circle[start] = null;
 	size--;
-	if (start == size-1) {
+	if (start == circle.length-1) {
 	    start = 0;
 	}
 	else {
@@ -107,10 +137,25 @@ public class MyDeque<T> {
 
     public String toString() {
 	String ret = "[";
-	for (int i = 0; i < circle.length-2; i++) {
-	    ret += circle[i] + ", ";
+	if (end < start) {
+		for (int i = start; i < circle.length; i++) {
+			ret += circle[i] + ", ";
+		}
+		for (int i = 0; i < end; i++) {
+			ret += circle[i] + ", ";
+		}
 	}
-	ret += circle[circle.length-1] + "]";
+	else {
+		for (int i = start; i < end; i++) {
+			ret += circle[i] + ", ";
+		}
+	}
+	if (size > 0) {
+		ret += circle[end] + "]";
+	}
+	else {
+		ret += "]";
+	}
 	ret += "\nSize: " + size;
 	ret += ", Length: " + circle.length;
 	ret += ", Pos of start: " + start;
@@ -120,10 +165,12 @@ public class MyDeque<T> {
 	return ret;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 	MyDeque<Integer> md = new MyDeque<Integer>();
 	System.out.println(md.toString());
 	md.addFirst(3);
+	System.out.println(md.toString());
+	md.grow();
 	System.out.println(md.toString());
 	md.addFirst(4);
 	System.out.println(md.toString());
@@ -131,7 +178,15 @@ public class MyDeque<T> {
 	System.out.println(md.toString());
 	md.addFirst(6);
 	System.out.println(md.toString());
+	md.addLast(6);
+	System.out.println(md.toString());
+	md.addLast(7);
+	System.out.println(md.toString());
+	System.out.println("removeFirst: " + md.removeFirst());
+	System.out.println(md.toString());
+	System.out.println("removeLast: " + md.removeLast());
+	System.out.println(md.toString());
 	System.out.println(md.getFirst());
 	System.out.println(md.getLast());
-    }
+    }*/
 }
