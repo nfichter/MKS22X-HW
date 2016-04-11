@@ -21,7 +21,7 @@ public class Coordinate {
     public int getX() {
 	return x;
     }
-    public void getY() {
+    public int getY() {
 	return y;
     }
 }
