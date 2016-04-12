@@ -2,15 +2,11 @@ import java.util.*;
 import java.io.*;
 
 public class BetterMaze{
-    private class Node{
-
-    }
-
     private char[][] maze;
     private int[]    solution;
     private int      startRow,startCol;
     private Frontier<Node> placesToGo;
-    private boolean  animate;//default to false
+    private boolean  animate;
 
    /**return a COPY of solution.
      *This should be : [x1,y1,x2,y2,x3,y3...]
@@ -25,33 +21,54 @@ public class BetterMaze{
 	return new int[1];
     }    
 
-
-    /**initialize the frontier as a queue and call solve
-    **/
     public boolean solveBFS(){  
-        /** IMPLEMENT THIS **/      
-	return false;
+        placesToGo = new FrontierQueue<Node>();     
+	return solve();
     }   
 
-
-   /**initialize the frontier as a stack and call solve
-    */ 
     public boolean solveDFS(){  
-        /** IMPLEMENT THIS **/  
-	return false;
+        placesToGo = new FrontierStack<Node>();
+	return solve();
     }    
+
+    private boolean canMove(int x, int y) {
+	return maze[y][x] == ' ';
+    }
+
+    private void move(int x, int y) {
+	if (canMove(x+1,y)) {
+	    placesToGo.add(new Node(new Coordinate(x+1,y)));
+	}
+	if (canMove(x-1,y)) {
+	    placesToGo.add(new Node(new Coordinate(x-1,y)));
+	}
+	if (canMove(x,y+1)) {
+	    placesToGo.add(new Node(new Coordinate(x,y+1)));
+	}
+	if (canMove(x,y-1)) {
+	    placesToGo.add(new Node(new Coordinate(x,y-1)));
+	}
+    }
 
    /**Search for the end of the maze using the frontier. 
       Keep going until you find a solution or run out of elements on the frontier.
     **/
-    private boolean solve(){  
-        /** IMPLEMENT THIS **/  
+    private boolean solve(){
+	int x = startCol;
+	int y = startRow;
+	int dir = 0;
+	move(x,y);
+	while (maze[y][x+1] != 'E' && maze[y-1][x] != 'E' && maze[y][x-1] != 'E' && maze[y+1][x] != 'E') {
+	    if (!placesToGo.hasNext()) {
+		return false;
+	    }
+	}
 	return false;
-    }    
-     
-   /**mutator for the animate variable  **/
-    public void setAnimate(boolean b){  /** IMPLEMENT THIS **/ }    
+    }
 
+    public void setAnimate(boolean b){
+	animate = b;
+    }
 
     public BetterMaze(String filename){
 	animate = false;
@@ -59,19 +76,15 @@ public class BetterMaze{
 	int maxr = 0;
 	startRow = -1;
 	startCol = -1;
-	//read the whole maze into a single string first
+
 	String ans = "";
 	try{
 	    Scanner in = new Scanner(new File(filename));
-
-	    //keep reading next line
 	    while(in.hasNext()){
 		String line = in.nextLine();
 		if(maxr == 0){
-		    //calculate width of the maze
 		    maxc = line.length();
 		}
-		//every new line add 1 to the height of the maze
 		maxr++;
 		ans += line;
 	    }
@@ -92,12 +105,6 @@ public class BetterMaze{
 	    }
 	}
     }
-
-
-
-
-
-
 
     private static final String CLEAR_SCREEN =  "\033[2J";
     private static final String HIDE_CURSOR =  "\033[?25l";
@@ -121,7 +128,6 @@ public class BetterMaze{
 	}
     }
 
-
     public String toString(){
 	int maxr = maze.length;
 	int maxc = maze[0].length;
@@ -140,7 +146,6 @@ public class BetterMaze{
 		ans += color(33,40)+c;
 	    }
 	}
-	//nice animation string
 	if(animate){
 	    return HIDE_CURSOR + go(0,0) + ans + color(37,40) +"\n"+ SHOW_CURSOR + color(37,40);
 	}else{
