@@ -8,14 +8,6 @@ public class BetterMaze{
 	private Frontier<Node> placesToGo;
 	private boolean  animate;
 
-	/**return a COPY of solution.
-	*This should be : [x1,y1,x2,y2,x3,y3...]
-	*the coordinates of the solution from start to end.
-	*Precondition : one of the solveXXX methods has already been 
-	* called (solveBFS OR solveDFS OR solveAStar)
-	*(otherwise an empty array is returned)
-	*Postcondition:  the correct solution is in the returned array
-	**/
 	public int[] solutionCoordinates(){
 		return solution;
 	}    
@@ -93,8 +85,10 @@ public class BetterMaze{
 			n = n.getLast();
 		}
 		solution = new int[solutions.size()];
-		for (int i = 0; i < solutions.size(); i++) {
-			solution[i] = solutions.get(i);
+		Collections.reverse(solutions);
+		for (int i = 0; i < solutions.size(); i+=2) {
+			solution[i] = solutions.get(i+1);
+			solution[i+1] = solutions.get(i);
 		}
 		System.out.println(x + "," + y);
 		maze[y][x] = '*';
