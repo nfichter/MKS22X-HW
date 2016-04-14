@@ -1,24 +1,28 @@
 import java.util.*;
 
 public class FrontierQueue<T> implements Frontier<T> {
-	MyQueue<T> f;
+	MyQueue<T> q;
 	
 	public FrontierQueue() {
-		f = new MyQueue<T>();
+		q = new MyQueue<T>();
 	}
 	
 	public void add(T element) {
-		f.enqueue(element);
+		q.enqueue(element);
 	}
 	
 	public T next() {
-		if (f.isEmpty()) {
+		if (q.isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		return f.dequeue();
+		return q.dequeue();
 	}
 	
 	public boolean hasNext() {
-		return (!f.isEmpty());
+		return (!q.isEmpty());
+	}
+	
+	public String toString() {
+		return q.toString();
 	}
 }

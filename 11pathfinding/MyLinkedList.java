@@ -106,7 +106,12 @@ public class MyLinkedList<T> implements Iterable<T>{
 		if (index == 0) {
 			T ret = start.getData();
 			start = start.getNext();
-			start.setPrev(null);
+			if (size > 1) {
+				start.setPrev(null);
+			}
+			else {
+				start = null;
+			}
 			size--;
 			return ret;
 		}

@@ -21,4 +21,8 @@ public class FrontierStack<T> implements Frontier<T> {
 	public boolean hasNext() {
 		return (!f.isEmpty());
 	}
+	
+	public String toString() {
+		return f.toString();
+	}
 }
