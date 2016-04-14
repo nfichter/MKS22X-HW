@@ -17,8 +17,7 @@ public class BetterMaze{
 	*Postcondition:  the correct solution is in the returned array
 	**/
 	public int[] solutionCoordinates(){
-		/** IMPLEMENT THIS **/      
-		return new int[1];
+		return solution;
 	}    
 
 	public boolean solveBFS(){  
@@ -63,6 +62,7 @@ public class BetterMaze{
 		int x = startCol;
 		int y = startRow;
 		int dir = 0;
+		ArrayList<Integer> solutions = new ArrayList<Integer>();
 		Node n = new Node(new Coordinate(x,y));
 		move(n);
 		while (maze[y][x+1] != 'E' && maze[y-1][x] != 'E' && maze[y][x-1] != 'E' && maze[y+1][x] != 'E') {
@@ -84,6 +84,17 @@ public class BetterMaze{
 			x = n.getCoord().getX();
 			y = n.getCoord().getY();
 			move(n);
+		}
+		while (n.getLast() != null) {
+			x = n.getCoord().getX();
+			y = n.getCoord().getY();
+			solutions.add(x);
+			solutions.add(y);
+			n = n.getLast();
+		}
+		solution = new int[solutions.size()];
+		for (int i = 0; i < solutions.size(); i++) {
+			solution[i] = solutions.get(i);
 		}
 		System.out.println(x + "," + y);
 		maze[y][x] = '*';
@@ -189,9 +200,12 @@ public class BetterMaze{
 		BetterMaze a = new BetterMaze("data1.dat");
 		a.setAnimate(true);
 		System.out.println(a.solveDFS());
+		for (int i = 0; i < a.solutionCoordinates().length; i+=2) {
+			System.out.println(a.solutionCoordinates()[i] + ", " + a.solutionCoordinates()[i+1]);
+		}
 		
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		}
 		catch (Exception e) {
 			System.out.println("waiting failed");
@@ -200,6 +214,7 @@ public class BetterMaze{
 		BetterMaze a2 = new BetterMaze("data1.dat");
 		a2.setAnimate(true);
 		System.out.println(a2.solveBFS());
+		System.out.println(a2.solutionCoordinates());
 		
 		try {
 			Thread.sleep(1000);
@@ -211,6 +226,7 @@ public class BetterMaze{
 		BetterMaze b = new BetterMaze("data2.dat");
 		b.setAnimate(true);
 		System.out.println(b.solveDFS());
+		System.out.println(b.solutionCoordinates());
 		
 		try {
 			Thread.sleep(1000);
@@ -222,5 +238,8 @@ public class BetterMaze{
 		BetterMaze b2 = new BetterMaze("data2.dat");
 		b2.setAnimate(true);
 		System.out.println(b2.solveBFS());
+		for (int i = 0; i < b2.solutionCoordinates().length; i+=2) {
+			System.out.println(b2.solutionCoordinates()[i] + ", " + b2.solutionCoordinates()[i+1]);
+		}
 	}
 }
