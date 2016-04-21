@@ -1,12 +1,38 @@
 public class BSTree<T extends Comparable<T>> {
     private Node root;
 
-    public BSTree(Node root) {
-	this.root = root;
+    public BSTree() {
+	root = null;
     }
     
-    public Node getRoot() {
-	return root;
+    public int  height() {
+	if (root == null) {
+	    return 0;
+	}
+	return root.height();
+    }
+
+    public void add(T value) {
+	if (root == null) {
+	    root = new Node(value);
+	}
+	else {
+	    root.add(value);
+	}
+    }
+
+    public String toString() {
+	if (root == null) {
+	    return "";
+	}
+	return root.toString();
+    }
+
+    public boolean contains(T value) {
+	if (root == null) {
+	    return false;
+	}
+	return root.contains(value);
     }
 
     private class Node {
@@ -30,16 +56,93 @@ public class BSTree<T extends Comparable<T>> {
 	public Node getRight() {
 	    return right;
 	}
-	public Node setLeft(Node left) {
+	public void setLeft(Node left) {
 	    this.left = left;
 	}
-	public Node setRight(Node right) {
+	public void setRight(Node right) {
 	    this.right = right;
 	}
 
 	public void add(T value) {
-	    Node current = this;
-	    while (!(current.getLeft() == null && current.getRight() == null) || //fix
+	    if (data.compareTo(value) > 0) {
+		if (left == null) {
+		    left = new Node(value);
+		}
+		else {
+		    left.add(value);
+		}
+	    }
+	    else {
+		if (right == null) {
+		    right = new Node(value);
+		}
+		else {
+		    right.add(value);
+		}
+	    }
 	}
+
+	public int height() {
+	    if (left == null && right == null) {
+		return 1;
+	    }
+	    else if (left == null && right != null) {
+		return 1 + right.height();
+	    }
+	    else if (right == null && left != null) {
+		return 1 + left.height();
+	    }
+	    return 1 + Math.max(left.height(), right.height());
+	}
+
+	public String toString() {
+	    String ret = "" + data + " ";
+	    if (left == null) {
+		ret += "_ ";
+	    }
+	    else {
+		ret += left.toString();
+	    }
+	    if (right == null) {
+		ret += "_ ";
+	    }
+	    else {
+		ret += right.toString();
+	    }
+	    return ret;
+	}
+
+	public boolean contains(T value) {
+	    if (data.equals(value)) {
+		return true;
+	    }
+	    else {
+		if (left == null && right == null) {
+		    return false;
+		}
+		else if (left != null && right == null) {
+		    return left.contains(value);
+		}
+		else if (left == null && right != null) {
+		    return right.contains(value);
+		}
+		else {
+		    return left.contains(value) || right.contains(value);
+		}
+	    }
+	}
+    }
+    public static void main(String[] args) {
+	BSTree<String> t = new BSTree<String>();
+	System.out.println("Start");
+	t.add("d");
+	t.add("b");
+	t.add("a");
+	t.add("c");
+	t.add("f");
+	t.add("e");
+	t.add("g");
+
+	System.out.println(t);
     }
 }
