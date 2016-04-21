@@ -142,7 +142,9 @@ public class BSTree<T extends Comparable<T>> {
 	t.add("f");
 	t.add("e");
 	t.add("g");
-
 	System.out.println(t);
+
+	System.out.println("Contains q: " + contains("q"));
+	System.out.println("Contains g: " + contains("g"));
     }
 }
