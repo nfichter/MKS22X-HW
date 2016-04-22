@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class BSTree<T extends Comparable<T>> {
     private Node root;
 
@@ -33,6 +35,13 @@ public class BSTree<T extends Comparable<T>> {
 	    return false;
 	}
 	return root.contains(value);
+    }
+
+    public boolean remove(T value) {
+	if (!root.contains(value)) {
+	    throw new NoSuchElementException();
+	}
+	return false;
     }
 
     private class Node {
@@ -131,6 +140,10 @@ public class BSTree<T extends Comparable<T>> {
 		}
 	    }
 	}
+
+	public boolean remove(T value) {
+	    return false;
+	}
     }
     public static void main(String[] args) {
 	BSTree<String> t = new BSTree<String>();
@@ -144,7 +157,7 @@ public class BSTree<T extends Comparable<T>> {
 	t.add("g");
 	System.out.println(t);
 
-	System.out.println("Contains q: " + contains("q"));
-	System.out.println("Contains g: " + contains("g"));
+	System.out.println("Contains q: " + t.contains("q"));
+	System.out.println("Contains g: " + t.contains("g"));
     }
 }
