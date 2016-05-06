@@ -102,11 +102,15 @@ public class MyHeap<T extends Comparable<T>> {
 	System.out.println(m);
 	m.add(2);
 	System.out.println(m);
+	m.add(5);
+	System.out.println(m);
+	m.add(1);
+	System.out.println(m);
 	m.add(4);
 	System.out.println(m);
-	m.add(3);
-	System.out.println(m);
-	m.add(7);
+	m.add(0);
+	m.add(-1);
+	m.add(8);
 	System.out.println(m);
     }
 }
