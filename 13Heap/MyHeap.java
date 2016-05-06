@@ -1,21 +1,24 @@
-public class MyHeap<T extends comparable<T>> {
+import java.util.*;
+import java.util.Arrays.*;
+@SuppressWarnings("unchecked")
+public class MyHeap<T extends Comparable<T>> {
     private boolean isMax;
     private T[] data;
     private int size;
 
     public MyHeap() {
         isMax = true;
-	data = new T[0];
+	data = (T[])(new Comparable[10]);
 	size = 0;
     }
     public MyHeap(boolean isMax) {
 	this.isMax = isMax;
-	data = new T[0];
+        data = (T[])(new Comparable[10]);
 	size = 0;
     }
     public MyHeap(T[] data) {
 	isMax = true;
-	this.data = new T[data.length];]
+	this.data = (T[])(new Comparable[10]);
 	for (int i = 0; i < data.length; i++) {
 	    this.data[i+1] = data[i];
 	}
@@ -23,7 +26,7 @@ public class MyHeap<T extends comparable<T>> {
     }
 
     private void doubleSize() {
-	newData T[] = new T[data.length*2+1];
+	T[] newData = (T[])(new Comparable[data.length*2]);
 	for (int i = 0; i < data.length; i++) {
 	    newData[i] = data[i];
 	}
@@ -31,23 +34,25 @@ public class MyHeap<T extends comparable<T>> {
     }
 
     private void pushDown(int k) {
-	int down = data[k];
+	T down = data[k];
 	int downPos = k;
+	T up;
+	int upPos;
 	if (isMax) {
 	    if (data[k*2].compareTo(data[k*2+1]) > 0) {
-		int up = data[k*2];
-		int upPos = k*2;
+		up = data[k*2];
+		upPos = k*2;
 	    } else {
-		int up = data[k*2+1];
-		int upPos = k*2+1;
+		up = data[k*2+1];
+		upPos = k*2+1;
 	    }
 	} else {
 	    if (data[k*2].compareTo(data[k*2+1]) < 0) {
-		int up = data[k*2];
-		int upPos = k*2;
+		up = data[k*2];
+		upPos = k*2;
 	    } else {
-		int up = data[k*2+1];
-		int upPos = data[k*2+1];
+		up = data[k*2+1];
+		upPos = k*2+1;
 	    }
 	}
 
@@ -56,11 +61,10 @@ public class MyHeap<T extends comparable<T>> {
     }
 
     private void pushUp(int k) {
-	int up = data[k];
+	T up = data[k];
 	int upPos = k;
-        int down = data[k/2];
+        T down = data[k/2];
 	int downPos = k/2;
-	
 	data[upPos] = down;
 	data[downPos] = up;
     }
@@ -69,22 +73,40 @@ public class MyHeap<T extends comparable<T>> {
 	if (size == data.length) {
 	    doubleSize();
 	}
+	if (size == 0) {
+	    data[1] = x;
+	}
 	int pos = size+1;
-	while (pos != 1 && x < data[pos/2]) {
+	data[pos] = x;
+	while (pos != 1 && x.compareTo(data[pos/2]) > 0) {
 	    pushUp(pos);
 	    pos = pos/2;
 	}
+	size++;
     }
 
     public String toString() {
 	String ret = "[";
-	for (int i = 0; i < size-1; i++) {
+	for (int i = 1; i < size; i++) {
 	    ret += data[i] + ", ";
 	}
-	if (data.length > 0) {
-	    ret += data[size-1];
+	if (size > 0) {
+	    ret += data[size];
 	}
 	ret += "]";
 	return ret;
+    }
+
+    public static void main(String[] args) {
+	MyHeap m = new MyHeap<Integer>();
+	System.out.println(m);
+	m.add(2);
+	System.out.println(m);
+	m.add(4);
+	System.out.println(m);
+	m.add(3);
+	System.out.println(m);
+	m.add(7);
+	System.out.println(m);
     }
 }
