@@ -44,9 +44,9 @@ public class MyHeap<T extends Comparable<T>> {
 	
 	private void pushDown(int k) {
 		if (isMax) {
-			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) <= 0) ||
+			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) > 0) ||
 			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) > 0)) {
-				if (data[k*2].compareTo(data[k*2+1]) <= 0) {
+				if (data[k*2].compareTo(data[k*2+1]) < 0) {
 					T hold = data[k];
 					data[k] = data[k*2+1];
 					data[k*2+1] = hold;
@@ -60,9 +60,9 @@ public class MyHeap<T extends Comparable<T>> {
 				}
 			}
 		} else {
-			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) > 0) ||
-			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) <= 0)) {
-				if (data[k*2].compareTo(data[k*2+1]) > 0) {
+			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) < 0) ||
+			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) < 0)) {
+				if (data[k*2].compareTo(data[k*2+1]) < 0) {
 					T hold = data[k];
 					data[k] = data[k*2+1];
 					data[k*2+1] = hold;
@@ -80,7 +80,7 @@ public class MyHeap<T extends Comparable<T>> {
 
 	private void pushUp(int k) {
 		if (isMax) {
-			while (inBounds(k/2) && data[k/2].compareTo(data[k]) <= 0) {
+			while (inBounds(k/2) && data[k/2].compareTo(data[k]) < 0) {
 				T hold = data[k];
 				data[k] = data[k/2];
 				data[k/2] = hold;
@@ -99,6 +99,7 @@ public class MyHeap<T extends Comparable<T>> {
 	private void heapify() {
 		for (int i = size/2; i > 0; i--) {
 			pushDown(i);
+			System.out.println(this);
 		}
 	}
 	
@@ -116,8 +117,15 @@ public class MyHeap<T extends Comparable<T>> {
 			doubleSize();
 		}
 		data[size+1] = x;
-		size++;
+ 		size++;
 		pushUp(size);
+	}
+
+	public T peek() {
+	    if (size == 0) {
+		throw new NoSuchElementException();
+	    }
+	    return data[1];
 	}
 
 	public String toString() {
@@ -134,17 +142,17 @@ public class MyHeap<T extends Comparable<T>> {
 
 	public static void main(String[] args) {
 	    MyHeap a = new MyHeap<Integer>();
-	    System.out.println(a);
+	    //System.out.println(a);
 	    a.add(2);
 	    a.add(5);
 	    a.add(-1);
 	    a.add(7);
 	    a.add(9);
-	    System.out.println(a);
+	    //System.out.println(a);
 	    a.delete();
-	    System.out.println(a);
 	    Integer[] bA = {-1, -2, 4, 11, 7, 0, 3};
+	    System.out.println("Start: "+Arrays.toString(bA));
 	    MyHeap b = new MyHeap<Integer>(bA);
-	    System.out.println(b);
+	    System.out.println("End: "+b);
 	}
 }
