@@ -23,6 +23,11 @@ public class MyHeap<T extends Comparable<T>> {
 			this.data[i+1] = data[i];
 		}
 		size = data.length;
+		heapify();
+	}
+	public MyHeap(T[] data, boolean isMax) {
+	    this(data);
+	    this.isMax = isMax;
 	}
 
 	private void doubleSize() {
@@ -125,5 +130,21 @@ public class MyHeap<T extends Comparable<T>> {
 		}
 		ret += "]";
 		return ret;
+	}
+
+	public static void main(String[] args) {
+	    MyHeap a = new MyHeap<Integer>();
+	    System.out.println(a);
+	    a.add(2);
+	    a.add(5);
+	    a.add(-1);
+	    a.add(7);
+	    a.add(9);
+	    System.out.println(a);
+	    a.delete();
+	    System.out.println(a);
+	    Integer[] bA = {-1, -2, 4, 11, 7, 0, 3};
+	    MyHeap b = new MyHeap<Integer>(bA);
+	    System.out.println(b);
 	}
 }
