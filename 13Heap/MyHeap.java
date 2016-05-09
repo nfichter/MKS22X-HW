@@ -33,63 +33,86 @@ public class MyHeap<T extends Comparable<T>> {
 		data = newData;
 	}
 
+	public boolean inBounds(int index) {
+		return (index <= size && index > 0 && data[index] != null);
+	}
+	
 	private void pushDown(int k) {
-		T down = data[k];
-		int downPos = k;
-		T up;
-		int upPos;
 		if (isMax) {
-			if (data[k*2].compareTo(data[k*2+1]) > 0) {
-				up = data[k*2];
-				upPos = k*2;
-			} else {
-				up = data[k*2+1];
-				upPos = k*2+1;
+			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) <= 0) ||
+			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) > 0)) {
+				if (data[k*2].compareTo(data[k*2+1]) <= 0) {
+					T hold = data[k];
+					data[k] = data[k*2+1];
+					data[k*2+1] = hold;
+					k = k*2+1;
+				}
+				else {
+					T hold = data[k];
+					data[k] = data[k*2];
+					data[k*2] = hold;
+					k = k*2;
+				}
 			}
 		} else {
-			if (data[k*2].compareTo(data[k*2+1]) < 0) {
-				up = data[k*2];
-				upPos = k*2;
-			} else {
-				up = data[k*2+1];
-				upPos = k*2+1;
+			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) > 0) ||
+			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) <= 0)) {
+				if (data[k*2].compareTo(data[k*2+1]) > 0) {
+					T hold = data[k];
+					data[k] = data[k*2+1];
+					data[k*2+1] = hold;
+					k = k*2+1;
+				}
+				else {
+					T hold = data[k];
+					data[k] = data[k*2];
+					data[k*2] = hold;
+					k = k*2;
+				}
 			}
 		}
-
-		data[downPos] = up;
-		data[upPos] = down;
 	}
 
 	private void pushUp(int k) {
-		T up = data[k];
-		int upPos = k;
-		T down = data[k/2];
-		int downPos = k/2;
-		data[upPos] = down;
-		data[downPos] = up;
+		if (isMax) {
+			while (inBounds(k/2) && data[k/2].compareTo(data[k]) <= 0) {
+				T hold = data[k];
+				data[k] = data[k/2];
+				data[k/2] = hold;
+				k /= 2;
+			}
+		} else {
+			while (inBounds(k/2) && data[k/2].compareTo(data[k]) > 0) {
+				T hold = data[k];
+				data[k] = data[k/2];
+				data[k/2] = hold;
+				k /= 2;
+			}
+		}
+	}
+	
+	private void heapify() {
+		for (int i = size/2; i > 0; i--) {
+			pushDown(i);
+		}
+	}
+	
+	public T delete() {
+		T ret = data[1];
+		data[1] = data[size];
+		data[size] = null;
+		pushDown(1);
+		size--;
+		return ret;
 	}
 
 	public void add(T x) {
 		if (size == data.length) {
 			doubleSize();
 		}
-		if (size == 0) {
-			data[1] = x;
-		}
-		int pos = size+1;
-		data[pos] = x;
-		if (isMax) {
-			while (pos != 1 && x.compareTo(data[pos/2]) > 0) {
-				pushUp(pos);
-				pos = pos/2;
-			}
-		} else {
-			while (pos != 1 && x.compareTo(data[pos/2]) < 0) {
-				pushUp(pos);
-				pos = pos/2;
-			}
-		}
+		data[size+1] = x;
 		size++;
+		pushUp(size);
 	}
 
 	public String toString() {
@@ -102,22 +125,5 @@ public class MyHeap<T extends Comparable<T>> {
 		}
 		ret += "]";
 		return ret;
-	}
-
-	public static void main(String[] args) {
-		MyHeap m = new MyHeap<Integer>();
-		System.out.println(m);
-		m.add(2);
-		System.out.println(m);
-		m.add(5);
-		System.out.println(m);
-		m.add(1);
-		System.out.println(m);
-		m.add(4);
-		System.out.println(m);
-		m.add(0);
-		m.add(-1);
-		m.add(8);
-		System.out.println(m);
 	}
 }
