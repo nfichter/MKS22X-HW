@@ -33,13 +33,13 @@ public class MyHeap<T extends Comparable<T>> {
 	private void doubleSize() {
 		T[] newData = (T[])(new Comparable[data.length*2]);
 		for (int i = 0; i < data.length; i++) {
-			newData[i+1] = data[i];
+			newData[i] = data[i];
 		}
 		data = newData;
 	}
 
 	public boolean inBounds(int index) {
-		return (index <= size && index > 0 && data[index] != null);
+		return (index <= size && index > 0);
 	}
 	
 	private void pushDown(int k) {
@@ -59,9 +59,14 @@ public class MyHeap<T extends Comparable<T>> {
 					k = k*2;
 				}
 			}
-		} else {
-			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) < 0) ||
-			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) < 0)) {
+		} else {;
+		    System.out.println("k:" + k + " k*2:" + k*2 + " k*2+1:" + (k*2+1));
+		    System.out.println(toString());
+		    System.out.println(data[1]);
+		    System.out.println(data[2]);
+		    System.out.println(size);
+		    while ((inBounds(k*2) && data[k*2].compareTo(data[k]) < 0) ||
+			   (inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) < 0)) {
 				if (data[k*2].compareTo(data[k*2+1]) < 0) {
 					T hold = data[k];
 					data[k] = data[k*2+1];
@@ -74,6 +79,7 @@ public class MyHeap<T extends Comparable<T>> {
 					data[k*2] = hold;
 					k = k*2;
 				}
+				
 			}
 		}
 	}
@@ -105,10 +111,14 @@ public class MyHeap<T extends Comparable<T>> {
 	
 	public T delete() {
 		T ret = data[1];
+		if (size == 1) {
+		    data[1] = null;
+		    return ret;
+		}
 		data[1] = data[size];
 		data[size] = null;
-		pushDown(1);
 		size--;
+		pushDown(1);
 		return ret;
 	}
 
