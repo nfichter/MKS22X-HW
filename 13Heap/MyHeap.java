@@ -39,40 +39,36 @@ public class MyHeap<T extends Comparable<T>> {
 	}
 
 	public boolean inBounds(int index) {
-		return (index <= size && index > 0 && data[index] != null);
+		return (index <= size && index > 0);
 	}
 	
 	private void pushDown(int k) {
 		if (isMax) {
-			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) > 0) ||
-			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) > 0)) {
-				if (data[k*2].compareTo(data[k*2+1]) < 0) {
+			while (inBounds(k*2) && inBounds(k*2+1) && (data[k].compareTo(data[k*2]) > 0 || data[k].compareTo(data[k*2+1]) > 0)) {
+				if (data[k*2+1].compareTo(data[k*2]) > 0) {
 					T hold = data[k];
 					data[k] = data[k*2+1];
 					data[k*2+1] = hold;
-					k = k*2+1;
-				}
-				else {
+					k = k*2 + 1;
+				} else {
 					T hold = data[k];
 					data[k] = data[k*2];
 					data[k*2] = hold;
-					k = k*2;
+					k *= 2;
 				}
 			}
 		} else {
-			while ((inBounds(k*2) && data[k*2].compareTo(data[k]) < 0) ||
-			(inBounds(k*2+1) && data[k*2+1].compareTo(data[k]) < 0)) {
-				if (data[k*2].compareTo(data[k*2+1]) < 0) {
+			while (inBounds(k*2) && inBounds(k*2+1) && (data[k].compareTo(data[k*2]) > 0 || data[k].compareTo(data[k*2+1]) > 0)) {
+				if (data[k*2+1].compareTo(data[k*2]) < 0) {
 					T hold = data[k];
 					data[k] = data[k*2+1];
 					data[k*2+1] = hold;
-					k = k*2+1;
-				}
-				else {
+					k = k*2 + 1;
+				} else {
 					T hold = data[k];
 					data[k] = data[k*2];
 					data[k*2] = hold;
-					k = k*2;
+					k *= 2;
 				}
 			}
 		}
@@ -104,11 +100,18 @@ public class MyHeap<T extends Comparable<T>> {
 	}
 	
 	public T delete() {
+		if (size == 0) {
+			throw new NoSuchElementException();
+		}
 		T ret = data[1];
+		if (size == 1) {
+		    data[1] = null;
+		    return ret;
+		}
 		data[1] = data[size];
 		data[size] = null;
-		pushDown(1);
 		size--;
+		pushDown(1);
 		return ret;
 	}
 
@@ -138,6 +141,10 @@ public class MyHeap<T extends Comparable<T>> {
 		}
 		ret += "]";
 		return ret;
+	}
+	
+	public int size() {
+		return size;
 	}
 
 	public static void main(String[] args) {
